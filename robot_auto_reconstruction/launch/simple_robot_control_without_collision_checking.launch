@@ -1,0 +1,9 @@
+<launch>
+ 	
+ 	<include file="$(find pr2_arm_kinematics)/launch/pr2_ik_rarm_node.launch"/>
+	<include file="$(find pr2_arm_kinematics)/launch/pr2_ik_larm_node.launch"/>
+  
+   <node pkg="simple_robot_control" name="joint_state_listener_server" type="joint_state_listener_server.py" >
+    </node>
+</launch>
+

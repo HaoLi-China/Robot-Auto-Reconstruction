@@ -1,0 +1,5 @@
+cloud_sources:
+  - name: full_cloud_filtered
+    frame_subsample: 1
+    point_subsample: 1
+    sensor_frame: laser_tilt_mount_link

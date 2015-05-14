@@ -1,0 +1,31 @@
+<package>
+  <description brief="interface to PR2 controllers">
+
+     Simple C++ and python interface to move the arms, head, base, torso and grippers of a PR2 robot.
+
+  </description>
+  <author></author>
+  <license></license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+  <depend package="actionlib"/>
+  <depend package="sensor_msgs"/>
+  <depend package="kinematics_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="std_msgs"/>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="arm_navigation_msgs"/>
+  <depend package="tf"/>
+  <depend package="tf_conversions"/>
+  <depend package="pr2_common_action_msgs"/>
+  
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lsimple_robot_control"/>
+  </export>
+
+</package>
+
+

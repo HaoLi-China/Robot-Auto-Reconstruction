@@ -1,0 +1,27 @@
+<launch>
+	
+	
+	  <!-- load perception -->
+	  <include file="$(find pr2_arm_navigation_perception)/launch/laser-perception.launch"/>
+	  <!-- load planning -->
+	  <include file="$(find pr2_arm_navigation_planning)/launch/ompl_planning.launch"/>
+	
+	  <!-- load move_arm -->
+	  <include file="$(find pr2_arm_navigation_actions)/launch/move_right_arm.launch"/>
+	  <include file="$(find pr2_arm_navigation_actions)/launch/move_left_arm.launch"/>
+	
+	  <!-- load planning_environment -->
+	  <include file="$(find pr2_arm_navigation_actions)/launch/environment_server.launch"/>
+	
+	  <!-- load controllers -->
+	  <include file="$(find pr2_arm_navigation_filtering)/launch/trajectory_filter.launch"/>
+	
+	  <!-- load ik -->
+	  <include file="$(find pr2_arm_navigation_kinematics)/launch/right_arm_collision_free_ik.launch"/>
+	   <include file="$(find pr2_arm_navigation_kinematics)/launch/left_arm_collision_free_ik.launch"/>
+	
+
+
+     <node pkg="simple_robot_control" name="joint_state_listener_server" type="joint_state_listener_server.py" >
+    </node>
+</launch>

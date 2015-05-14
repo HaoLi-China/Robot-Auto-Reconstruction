@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/p/bosch-ros-pkg/code/!svn/ver/1513/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control
+END
+base_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/p/bosch-ros-pkg/code/!svn/ver/543/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/base_control.h
+END
+arm_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/p/bosch-ros-pkg/code/!svn/ver/835/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/arm_control.h
+END
+head_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/p/bosch-ros-pkg/code/!svn/ver/543/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/head_control.h
+END
+robot_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/p/bosch-ros-pkg/code/!svn/ver/543/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/robot_control.h
+END
+torso_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/p/bosch-ros-pkg/code/!svn/ver/543/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/torso_control.h
+END
+gripper_control.h
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/p/bosch-ros-pkg/code/!svn/ver/1513/trunk/stacks/bosch_manipulation_utils/simple_robot_control/include/simple_robot_control/gripper_control.h
+END

@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/p/bosch-ros-pkg/code/!svn/ver/374/trunk/stacks/bosch_manipulation_utils/simple_robot_control/srv
+END
+ReturnJointStates.srv
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/p/bosch-ros-pkg/code/!svn/ver/372/trunk/stacks/bosch_manipulation_utils/simple_robot_control/srv/ReturnJointStates.srv
+END

@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/p/bosch-ros-pkg/code/!svn/ver/1149/trunk/stacks/bosch_manipulation_utils/simple_robot_control/config
+END
+collision_map_sources.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/p/bosch-ros-pkg/code/!svn/ver/1149/trunk/stacks/bosch_manipulation_utils/simple_robot_control/config/collision_map_sources.yaml
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/p/bosch-ros-pkg/code/!svn/ver/862/trunk/stacks/bosch_manipulation_utils/simple_robot_control/launch
+END
+simple_robot_control.launch
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/p/bosch-ros-pkg/code/!svn/ver/636/trunk/stacks/bosch_manipulation_utils/simple_robot_control/launch/simple_robot_control.launch
+END
+simple_robot_control_without_collision_checking.launch
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/p/bosch-ros-pkg/code/!svn/ver/862/trunk/stacks/bosch_manipulation_utils/simple_robot_control/launch/simple_robot_control_without_collision_checking.launch
+END
