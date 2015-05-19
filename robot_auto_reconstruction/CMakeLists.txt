@@ -33,8 +33,14 @@ rosbuild_add_library(${PROJECT_NAME} src/up_down_gripper.cpp)
 rosbuild_add_executable(socketServer src/socketServer.cpp)
 target_link_libraries(socketServer ${PROJECT_NAME})
 
-#rosbuild_add_executable(test_app test/test_app.cpp)
-#target_link_libraries(test_app ${PROJECT_NAME})
+rosbuild_add_executable(workBeforeCalibration src/workBeforeCalibration.cpp)
+target_link_libraries(workBeforeCalibration ${PROJECT_NAME})
+
+rosbuild_add_executable(calibration src/calibration.cpp)
+target_link_libraries(calibration ${PROJECT_NAME})
+
+rosbuild_add_executable(test src/test.cpp)
+target_link_libraries(test ${PROJECT_NAME})
 
 #rosbuild_add_executable(init_arm_pose test/init_arm_pose.cpp)
 #target_link_libraries(init_arm_pose ${PROJECT_NAME})

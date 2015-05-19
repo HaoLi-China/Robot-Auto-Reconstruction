@@ -60,6 +60,9 @@ void play_sound_tip(char ch){
     //l:set head pose
     //m:left arm take back
     //n:right arm take back
+    //o:get left gripper touch point
+    //p:get right gripper touch point
+    //q:test calibration result
     //z:close
 
     switch(ch){
@@ -119,6 +122,17 @@ void play_sound_tip(char ch){
         system("rosrun sound_play say.py \"I will take back the arm.\"");
         printf("I will take back the arm.\n");
         break;
+    case 'o':
+        system("rosrun sound_play say.py \"I will find gripper touch point.\"");
+        printf("I will find gripper touch point.\n");
+        break;
+    case 'p':
+        system("rosrun sound_play say.py \"I will find gripper touch point.\"");
+        printf("I will find gripper touch point.\n");
+        break;
+    case 'q':
+        system("rosrun sound_play say.py \"I will test the calibration result.\"");
+        printf("I will test the calibration result.\n");
     case 'z':
         system("rosrun sound_play say.py \"The connection will be closed.\"");
         printf("The connection will be closed.\n");
@@ -284,7 +298,7 @@ void data_parse_jkmn(char* ch, tf::Vector3& position, tf::Vector3& direction){
     }
 }
 
-void data_parse_l(char* ch, tf::Vector3 &head_focus){
+void data_parse_l(char* ch, tf::Vector3 &pos){
     int index=0;
     int count=0;
     char tem[20];
@@ -293,7 +307,33 @@ void data_parse_l(char* ch, tf::Vector3 &head_focus){
         if(*ch==',' || *ch==';'){
             strncpy(tem,ch-index,index);
             tem[index]='\0';
-            head_focus[count]=str2float(tem);
+            pos[count]=str2float(tem);
+            index=0;
+            count++;
+            ch++;
+            cout<<tem<<endl;
+            continue;
+        }
+        index++;
+        ch++;
+    }
+}
+
+void data_parse_op(char* ch, tf::Vector3& position, tf::Vector3& direction){
+    int index=0;
+    int count=0;
+    char tem[20];
+
+    while(*ch!='\0'){
+        if(*ch==',' || *ch==';'){
+            strncpy(tem,ch-index,index);
+            tem[index]='\0';
+            if(count<3){
+                position[count]=str2float(tem);
+            }
+            else{
+                direction[count-3]=str2float(tem);
+            }
             index=0;
             count++;
             ch++;
@@ -384,6 +424,9 @@ int main(int argc, char **argv)
                     //l:set head pose
                     //m:left arm take back
                     //n:right arm take back
+                    //o:get left gripper touch point
+                    //p:get right gripper touch point
+                    //q:test calibration result
                     //z:close
 
                     play_sound_tip(message[0]);
@@ -471,6 +514,7 @@ int main(int argc, char **argv)
                     case 'l':
                     {
                         tf::Vector3 head_focus;
+                        data_parse_l(message+2, head_focus);
                         set_head_pose(robot.head, head_focus);
                         sendData("finished",9);
                         break;
@@ -493,6 +537,63 @@ int main(int argc, char **argv)
                         sendData("finished",9);
                         break;
                     }
+                    case 'o':
+                    {
+                        tf::Vector3 position_kinect;
+                        tf::Vector3 dir_kinect;
+                        tf::Vector3 position_base;
+                        tf::Vector3 dir_base;
+
+                        data_parse_op(message+2, position_kinect, dir_kinect);
+                        get_l_touch_point_and_dir(n, position_kinect, dir_kinect, position_base, dir_base);
+
+                        printf("position_base.x()%f\n", position_base.x());
+                        printf("position_base.y()%f\n", position_base.y());
+                        printf("position_base.z()%f\n", position_base.z());
+                        printf("dir_base.x()%f\n", dir_base.x());
+                        printf("dir_base.y()%f\n", dir_base.y());
+                        printf("dir_base.z()%f\n", dir_base.z());
+
+                        std::stringstream stream;
+                        stream << position_base.x() <<","<<position_base.y()<<","<<position_base.z()<<","
+                               <<dir_base.x() <<","<<dir_base.y()<<","<<dir_base.z()<<";";
+                        std::string str = stream.str();
+                        char* ch_pos = const_cast<char*>(str.c_str());
+
+                        printf("ch_pos:%s\n", ch_pos);
+
+                        sendData(ch_pos,strlen(ch_pos)+1);
+                        break;
+                    }
+                    case 'p':
+                    {
+                        tf::Vector3 position_kinect;
+                        tf::Vector3 dir_kinect;
+                        tf::Vector3 position_base;
+                        tf::Vector3 dir_base;
+
+                        data_parse_op(message+2, position_kinect, dir_kinect);
+                        get_r_touch_point_and_dir(n, position_kinect, dir_kinect, position_base, dir_base);
+
+                        std::stringstream stream;
+                        stream << position_base.x() <<","<<position_base.y()<<","<<position_base.z()<<","<<dir_base.x() <<","<<dir_base.y()<<","<<dir_base.z()<<";";
+                        std::string str = stream.str();
+                        char* ch_pos = const_cast<char*>(str.c_str());
+
+                        sendData(ch_pos,strlen(ch_pos)+1);
+                        break;
+                    }
+                    case 'q'://just for test
+                    {
+                        tf::Vector3 position_kinect;
+                        tf::Vector3 dir_kinect;
+
+                        data_parse_op(message+2, position_kinect, dir_kinect);
+                        test_calibration_result(n, position_kinect, dir_kinect);
+
+                        sendData("finished",9);
+                        break;
+                    }
                     case 'z':
                     {
                         stop();
@@ -512,54 +613,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-
-
-    //    ros::init(argc, argv, "robot_control_test_app");
-    //    ros::NodeHandle nh;
-
-
-
-    //    //look straight
-    //    robot.head.lookat("base_link", tf::Vector3(0.5, 0.0, 1.2));
-
-    //    //do stuff with arms
-    //    robot.left_arm.stretch();
-    //    robot.right_arm.stretch();
-
-    //    //ros::Duration(6.0).sleep();
-
-    //    robot.torso.move(0.28, false);
-
-    //    ros::Duration(1.0).sleep();
-
-    //    //r_arm pick up kinect
-    //    r_pick_up_kinect(robot.right_arm, robot.right_gripper, robot.base);
-
-
-    //    //    tf::StampedTransform tf_kinect (tf::Transform(tf::Quaternion(-0.083, 0.176, 0.347, 0.918), tf::Vector3(0.465, 0.172, 1.054)), ros::Time::now(), "base_link","tf_kinect");
-    //    //    robot.right_arm.moveGrippertoPose(tf_kinect);
-
-    //    robot.head.lookat("base_link", tf::Vector3(0.638, 0.552, 0.772));
-
-    //    double pos_right[] = {0.227, 0.160, -0.307, -1.411, -8.486, -1.756, 3.004};
-    //    std::vector<double> pos_vec(pos_right, pos_right+7);
-    //    robot.right_arm.goToJointPos(pos_vec);
-
-
-    //    tf::Vector3 positon1(0.638, 0.552, 0.772);
-    //    tf::Vector3 direction1(0.6,0.4,0);
-    //    push_object(robot.left_arm, robot.right_arm, positon1, direction1);
-
-    //    //use left arm
-    //    tf::StampedTransform t (tf::Transform(tf::Quaternion(0.994, 0.069, -0.037, 0.073), positon1), ros::Time::now(), "base_link","t");
-    //    robot.left_arm.moveGrippertoPose(t);
-
-
-    //    ros::Duration(1.0).sleep();
-
-    //    robot.left_arm.stretch();
-
-
-
-
 }

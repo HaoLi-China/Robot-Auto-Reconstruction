@@ -1,7 +1,7 @@
 #include "auto_reconstruction.h"
 
 // create quaternion with angle and axis
-void CQuaternion(tf::Vector3& axis, const float& angle, tf::Quaternion& quaternion)
+void CQuaternion(const tf::Vector3& axis, const float& angle, tf::Quaternion& quaternion)
 {
     tf::Vector3 t;
     t[0] = axis.x();
@@ -14,6 +14,22 @@ void CQuaternion(tf::Vector3& axis, const float& angle, tf::Quaternion& quaterni
     quaternion.setX(sina * t.x());
     quaternion.setY(sina * t.y());
     quaternion.setZ(sina * t.z());
+}
+
+// create quaternion with Euler angles
+void Eulerangles2Quaternion(const tf::Vector3& angle, tf::Quaternion& quaternion)
+{
+    float cx = cos(angle.x()/2);
+    float sx = sin(angle.x()/2);
+    float cy = cos(angle.y()/2);
+    float sy = sin(angle.y()/2);
+    float cz = cos(angle.z()/2);
+    float sz = sin(angle.z()/2);
+
+    quaternion.setW(cx*cy*cz + sx*sy*sz);
+    quaternion.setX(sx*cy*cz - cx*sy*sz);
+    quaternion.setY(cx*sy*cz + sx*cy*sz);
+    quaternion.setZ(cx*cy*sz - sx*sy*cz);
 }
 
 //init robot pose
@@ -155,8 +171,19 @@ void l_push_object(simple_robot_control::Arm& arm_l, tf::Vector3& position, tf::
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    tf::Vector3 start_position = position - 0.03*push_direction;
-    tf::Vector3 target_position = position + 0.1*push_direction;
+    position.setZ(position.z()-0.15);
+    //position.setY(position.y()-0.01);
+
+    tf::Vector3 start_position = position - 0.35*push_direction;
+    tf::Vector3 target_position = position - 0.25*push_direction;
+
+    std::cout<<  "start_position.x():" << start_position.x() <<std::endl;
+    std::cout<<  "start_position.y():" << start_position.y() <<std::endl;
+    std::cout<<  "start_position.z():" << start_position.z() <<std::endl;
+    std::cout<<  "target_position.x():" << target_position.x() <<std::endl;
+    std::cout<<  "target_position.y():" << target_position.y() <<std::endl;
+    std::cout<<  "target_position.z():" << target_position.z() <<std::endl;
+
 
 
     //use left arm
@@ -187,7 +214,8 @@ void r_push_object(simple_robot_control::Arm& arm_r, tf::Vector3& position, tf::
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    tf::Vector3 start_position = position - 0.03*push_direction;
+    //tf::Vector3 start_position = position - 0.03*push_direction;
+    tf::Vector3 start_position = position - 0.2*push_direction;
     tf::Vector3 target_position = position + 0.1*push_direction;
 
     //use right arm
@@ -215,8 +243,12 @@ void l_take_back(simple_robot_control::Arm& arm_l, tf::Vector3& position, tf::Ve
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    tf::Vector3 start_position = position + 0.1*push_direction;
-    tf::Vector3 target_position = position - 0.03*push_direction;
+    position.setZ(position.z()-0.15);
+    //position.setY(position.y()-0.01);
+
+    tf::Vector3 start_position = position - 0.25*push_direction;
+    //tf::Vector3 target_position = position - 0.03*push_direction;
+    tf::Vector3 target_position = position - 0.35*push_direction;
 
     //use left arm
     tf::StampedTransform tf_l1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_l1");
@@ -247,7 +279,8 @@ void r_take_back(simple_robot_control::Arm& arm_r, tf::Vector3& position, tf::Ve
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
     tf::Vector3 start_position = position + 0.1*push_direction;
-    tf::Vector3 target_position = position - 0.03*push_direction;
+    //tf::Vector3 target_position = position - 0.03*push_direction;
+    tf::Vector3 target_position = position - 0.20*push_direction;
 
     //use right arm
     tf::StampedTransform tf_r1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_r1");
@@ -288,127 +321,285 @@ void set_head_pose(simple_robot_control::Head& head, tf::Vector3 &head_focus){
     head.lookat("base_link", head_focus);
 }
 
+//just for test
+void test_calibration_result(ros::NodeHandle &n, const tf::Vector3 &position_kinect, const tf::Vector3 &dir_kinect){
+    //    stransform.getRotation().x():0.601777
+    //    stransform.getRotation().y():-0.503993
+    //    stransform.getRotation().z():0.370892
+    //    stransform.getRotation().w():-0.49628
+    //    stransform.getOrigin().x():0.00206023
+    //    stransform.getOrigin().y():0.00838143
+    //    stransform.getOrigin().z():0.113836
+
+    //    stransform.getRotation().x():-0.606064
+    //    stransform.getRotation().y():0.487114
+    //    stransform.getRotation().z():-0.355795
+    //    stransform.getRotation().w():0.518476
+    //    stransform.getOrigin().x():-0.00336185
+    //    stransform.getOrigin().y():0.047869
+    //    stransform.getOrigin().z():0.118485
 
 
+    printf("position_kinect.x()%f\n", position_kinect.x());
+    printf("position_kinect.y()%f\n", position_kinect.y());
+    printf("position_kinect.z()%f\n", position_kinect.z());
+    printf("dir_kinect.x()%f\n", dir_kinect.x());
+    printf("dir_kinect.y()%f\n", dir_kinect.y());
+    printf("dir_kinect.z()%f\n", dir_kinect.z());
+
+    //    tf::Quaternion quaternion0;
+    //    quaternion0.setX(-0.606064);
+    //    quaternion0.setY(0.487114);
+    //    quaternion0.setZ(-0.355795);
+    //    quaternion0.setW(0.518476);
+
+    tf::Quaternion quaternion0;
+    tf::Vector3 angle0(-PI/2.0-PI/10.0, 0, -PI/2.0-PI/72.0);
+    Eulerangles2Quaternion(angle0, quaternion0);
 
 
-//int main(int argc, char** argv){
-//    ros::init(argc, argv, "robot_control_test_app");
-//    ros::NodeHandle nh;
+    //tf::Vector3 translation0(-0.00336185, 0.047869, 0.118485);
+    tf::Vector3 translation0(-0.00336185, 0.047869, 0.075485);
 
-//    //Create robot controller interface
-//    simple_robot_control::Robot robot;
+    tf::Quaternion quaternion1;
+    tf::Vector3 angle1(0, 0, 0);
+    Eulerangles2Quaternion(angle1, quaternion1);
 
-//    //look straight
+    tf::Quaternion quaternion2;
+    tf::Vector3 angle2(0, 0, 0);
+    Eulerangles2Quaternion(angle2, quaternion2);
 
-//    robot.head.lookat("base_link", tf::Vector3(0.5, 0.0, 1.2));
-//    //robot.head.lookat("base_link", tf::Vector3(0.668, 0.150, 0.764));
+    tf::Vector3 translation1(position_kinect.x(), position_kinect.y(), position_kinect.z());
+    tf::Vector3 translation2(dir_kinect.x(), dir_kinect.y(), dir_kinect.z());
 
-////    double pos_right[] = {-0.955,0.366,-0.312,-1.963,4.814,-1.660,3.018};
-////    std::vector<double> pos_vec(pos_right, pos_right+7);
-////    robot.right_arm.goToJointPos(pos_vec);
+    tf::TransformBroadcaster br0;
+    tf::Transform transform0;
+    tf::TransformBroadcaster br1;
+    tf::Transform transform1;
+    tf::TransformBroadcaster br2;
+    tf::Transform transform2;
 
-////    double pos_left[] = {1.492,1.296,1.506,-1.670,-0.306,-1.476,-1.600};
-////    std::vector<double> pos_vec(pos_left, pos_left+7);
-////    robot.left_arm.goToJointPos(pos_vec);
+    std::stringstream stt0;
+    stt0 << "kinect_frame";
 
+    std::stringstream stt1;
+    stt1 << "touch_point";
 
-//    //do stuff with arms
-//    //robot.left_arm.stretch();
-//    //robot.right_arm.stretch();
+    std::stringstream stt2;
+    stt2 << "touch_dir";
 
-//    //ros::Duration(6.0).sleep();
+    std::string frame1="r_gripper_tool_frame";
+    std::string frame2=stt0.str();
+    std::string frame4=stt1.str();
+    std::string frame5=stt2.str();
 
-//    robot.torso.move(0.28, false);
+    while(n.ok()){
+        ros::Time time=ros::Time::now();
 
-//    ros::Duration(1.0).sleep();
+        transform0.setOrigin(translation0);
+        transform0.setRotation(quaternion0);
+        br0.sendTransform(tf::StampedTransform(transform0, time, frame1, frame2));
 
-////    //r_arm pick up kinect
-////    r_pick_up_kinect(robot.right_arm, robot.right_gripper, robot.base);
-////    //r_arm put down kinect
-////    r_put_down_kinect(robot.right_arm, robot.right_gripper, robot.base);
-////    //l_arm pick up kinect
-////    l_pick_up_kinect(robot.left_arm, robot.left_gripper, robot.base);
-////    //l_arm put down kinect
-////    l_put_down_kinect(robot.left_arm, robot.left_gripper, robot.base);
+        transform1.setOrigin(translation1);
+        transform1.setRotation(quaternion1);
+        br1.sendTransform(tf::StampedTransform(transform1, time, frame2, frame4));
 
+        transform2.setOrigin(translation2);
+        transform2.setRotation(quaternion2);
+        br2.sendTransform(tf::StampedTransform(transform2, time, frame2, frame5));
 
+        ros::Duration(1.0).sleep();
+    }
+}
 
-//    //robot.base.driveLeft(1.2, 0.04);
+//get left gripper touch point
+void get_l_touch_point_and_dir(ros::NodeHandle &n, const tf::Vector3 &position_kinect, const tf::Vector3 &dir_kinect, tf::Vector3 &position_base, tf::Vector3 &dir_base){
 
-//    //robot.base.driveRight(1.2, 0.04);
-//    //robot.base.driveForward(0.15, 0.04);
+    tf::Quaternion quaternion0;
+    tf::Vector3 angle0(-PI/2.0-PI/10.0, 0, -PI/2.0-PI/72.0);
+    Eulerangles2Quaternion(angle0, quaternion0);
 
-//    //robot.base.driveBack(0.15, 0.04);
+    tf::Quaternion quaternion1;
+    tf::Vector3 angle1(0, 0, 0);
+    Eulerangles2Quaternion(angle1, quaternion1);
 
-//    //robot.base.turn(1, M_PI, 0.1);
+    tf::Quaternion quaternion2;
+    tf::Vector3 angle2(0, 0, 0);
+    Eulerangles2Quaternion(angle2, quaternion2);
 
-//    //robot.base.driveRight(3.5, 0.06);
-//    //robot.base.driveBack(0.5, 0.06);
-//    //robot.base.turn(1, M_PI, 0.1);
+    tf::Vector3 translation0(-0.00336185, 0.047869, 0.075485);
+    tf::Vector3 translation1(position_kinect.x(), position_kinect.y(), position_kinect.z());
+    tf::Vector3 translation2(dir_kinect.x(), dir_kinect.y(), dir_kinect.z());
 
+    tf::TransformBroadcaster br0;
+    tf::Transform transform0;
+    tf::TransformBroadcaster br1;
+    tf::Transform transform1;
+    tf::TransformBroadcaster br2;
+    tf::Transform transform2;
 
-//    //robot.base.circle_turn (0, 0.5, 0.06);
+    std::stringstream stt0;
+    stt0 << "kinect_frame";
 
+    std::stringstream stt1;
+    stt1 << "touch_point";
 
+    std::stringstream stt2;
+    stt2 << "touch_dir";
 
+    std::string frame1="r_gripper_tool_frame";
+    std::string frame2=stt0.str();
+    std::string frame3="base_link";
+    std::string frame4=stt1.str();
+    std::string frame5=stt2.str();
 
+    tf::TransformListener listener0;
+    tf::StampedTransform stransform0;
+    tf::TransformListener listener1;
+    tf::StampedTransform stransform1;
 
-////    tf::Vector3 positon1(0.638, 0.552, 0.772);
-////    tf::Vector3 direction1(0.6,0.4,0);
-////    push_object(robot.left_arm, robot.right_arm, positon1, direction1);
+    int flag=0;
 
+    while(!flag){
+        ros::Time time=ros::Time::now();
+        if (n.ok()){
+            transform0.setOrigin(translation0);
+            transform0.setRotation(quaternion0);
+            br0.sendTransform(tf::StampedTransform(transform0, time, frame1, frame2));
 
-////    tf::StampedTransform tf_kinect (tf::Transform(tf::Quaternion(-0.083, 0.176, 0.347, 0.918), tf::Vector3(0.465, 0.172, 1.054)), ros::Time::now(), "base_link","tf_kinect");
-////    robot.right_arm.moveGrippertoPose(tf_kinect);
+            transform1.setOrigin(translation1);
+            transform1.setRotation(quaternion1);
+            br1.sendTransform(tf::StampedTransform(transform1, time, frame2, frame4));
 
+            transform2.setOrigin(translation2);
+            transform2.setRotation(quaternion2);
+            br2.sendTransform(tf::StampedTransform(transform2, time, frame2, frame5));
+        }
+        else{
+            std::cerr<<"node is not ok!"<<std::endl;
+            return;
+        }
 
+        try{
+            listener0.lookupTransform(frame3,frame4,
+                                      ros::Time(0), stransform0);
+            listener1.lookupTransform(frame3,frame5,
+                                      ros::Time(0), stransform1);
+            flag=1;
+        }
+        catch (tf::TransformException ex){
+            // cerr<<ex.what()<<endl;
+        }
+    }
 
-//    //    tf::Vector3 positon2(0.315792, 0.712564, 0.760689);
-//    //    tf::Vector3 direction2(0.74809, 0.663041, -0.0271604);
-//    //    push_object(robot.left_arm, robot.right_arm, positon2, direction2);
+    printf("stransform0.getOrigin().x()%f\n", stransform0.getOrigin().x());
+    printf("stransform0.getOrigin().y()%f\n", stransform0.getOrigin().y());
+    printf("stransform0.getOrigin().z()%f\n", stransform0.getOrigin().z());
+    printf("stransform1.getOrigin().x()%f\n", stransform1.getOrigin().x());
+    printf("stransform1.getOrigin().y()%f\n", stransform1.getOrigin().y());
+    printf("stransform1.getOrigin().z()%f\n", stransform1.getOrigin().z());
 
-////    tf::Vector3 positon2(0.375792, 0.562564, 0.760689);
-////    tf::Vector3 direction2(0.74809, 0.663041, -0.0271604);
-////    push_object(robot.left_arm, robot.right_arm, positon2, direction2);
+    position_base.setX(stransform0.getOrigin().x());
+    position_base.setY(stransform0.getOrigin().y());
+    position_base.setZ(stransform0.getOrigin().z());
 
+    dir_base.setX(stransform1.getOrigin().x());
+    dir_base.setY(stransform1.getOrigin().y());
+    dir_base.setZ(stransform1.getOrigin().z());
 
-//    //robot.base.driveForward(0.05, 0.05);
-//    //robot.base.driveLeft(0.8, 0.05);
-//    //robot.base.driveBack(0.1, 0.05);
-//    //robot.base.driveRight(0.1, 0.05);
+    printf("position_base.x()%f\n", position_base.x());
+    printf("position_base.y()%f\n", position_base.y());
+    printf("position_base.z()%f\n", position_base.z());
+    printf("dir_base.x()%f\n", dir_base.x());
+    printf("dir_base.y()%f\n", dir_base.y());
+    printf("dir_base.z()%f\n", dir_base.z());
+}
 
-//    //    double tuck_pos_right[] = { -0.4,1.0,0.0,-2.05,0.0,-0.1,0.0, -0.024,1.10,-1.56,-2.12, -1.42, -1.84, 0.21};
-//    //    std::vector<double> tuck_pos_vec(tuck_pos_right, tuck_pos_right+14);
-//    //    robot.right_arm.goToJointPos(tuck_pos_vec);
+//get right gripper touch point
+void get_r_touch_point_and_dir(ros::NodeHandle &n, const tf::Vector3 &position_kinect, const tf::Vector3 &dir_kinect, tf::Vector3 &position_base, tf::Vector3 &dir_base){
 
-//    //    //robot.right_arm.stretch();
-//    //    ros::Duration(2.0).sleep();
+    tf::Quaternion quaternion0;
+    tf::Vector3 angle0(-PI/2.0-PI/10.0, 0, -PI/2.0-PI/72.0);
+    Eulerangles2Quaternion(angle0, quaternion0);
 
-//   //robot.left_arm.moveGripperToPosition(tf::Vector3(0.741,-0.413, 0.809), "base_link", simple_robot_control::Arm::FRONTAL);
-//    //    robot.right_arm.moveGripperToPosition(tput downf::Vector3(0.787,0.081, 0.771), "base_link", simple_robot_control::Arm::FRONTAL);
+    tf::Quaternion quaternion1;
+    tf::Vector3 angle1(0, 0, 0);
+    Eulerangles2Quaternion(angle1, quaternion1);
 
+    tf::Quaternion quaternion2;
+    tf::Vector3 angle2(0, 0, 0);
+    Eulerangles2Quaternion(angle2, quaternion2);
 
+    tf::Vector3 translation0(-0.00336185, 0.047869, 0.075485);
+    tf::Vector3 translation1(position_kinect.x(), position_kinect.y(), position_kinect.z());
+    tf::Vector3 translation2(dir_kinect.x(), dir_kinect.y(), dir_kinect.z());
 
+    tf::TransformBroadcaster br0;
+    tf::Transform transform0;
+    tf::TransformBroadcaster br1;
+    tf::Transform transform1;
+    tf::TransformBroadcaster br2;
+    tf::Transform transform2;
 
+    std::stringstream stt0;
+    stt0 << "kinect_frame";
 
-//    /*********move left_arm and right_arm*********/
-//    //    tf::StampedTransform tf_l (tf::Transform(tf::Quaternion(0.996, -0.036, -0.081, -0.027), tf::Vector3(0.787, 0.081, 0.771)), ros::Time::now(), "base_link","tf_l");
-//    //    robot.left_arm.moveGrippertoPose(tf_l);
+    std::stringstream stt1;
+    stt1 << "touch_point";
 
-//    //    tf::StampedTransform tf_r (tf::Transform(tf::Quaternion(0.983, 0.155, -0.096, -0.010), tf::Vector3(0.741, -0.413, 0.809)), ros::Time::now(), "base_link","tf_r");
-//    //    robot.right_arm.moveGrippertoPose(tf_r);
+    std::stringstream stt2;
+    stt2 << "touch_dir";
 
-//    //    ros::Duration(1.0).sleep();
-//    //    //look at right gripper
-//    //    robot.head.lookat("r_gripper_tool_frame");
+    std::string frame1="l_gripper_tool_frame";
+    std::string frame2=stt0.str();
+    std::string frame3="base_link";
+    std::string frame4=stt1.str();
+    std::string frame5=stt2.str();
 
-//    //drive 0.5m forward
-//    //robot.base.driveForward(0.3);
+    tf::TransformListener listener0;
+    tf::StampedTransform stransform0;
+    tf::TransformListener listener1;
+    tf::StampedTransform stransform1;
 
-//    //raise torso to 10cm above lowest position
-//    //robot.torso.move(0.1);
+    int flag=0;
 
-//    return 0;
+    while(!flag){
+        ros::Time time=ros::Time::now();
+        if (n.ok()){
+            transform0.setOrigin(translation0);
+            transform0.setRotation(quaternion0);
+            br0.sendTransform(tf::StampedTransform(transform0, time, frame1, frame2));
 
-//}
+            transform1.setOrigin(translation1);
+            transform1.setRotation(quaternion1);
+            br1.sendTransform(tf::StampedTransform(transform1, time, frame2, frame4));
+
+            transform2.setOrigin(translation2);
+            transform2.setRotation(quaternion2);
+            br2.sendTransform(tf::StampedTransform(transform2, time, frame2, frame5));
+        }
+        else{
+            std::cerr<<"node is not ok!"<<std::endl;
+            return;
+        }
+
+        try{
+            listener0.lookupTransform(frame3,frame4,
+                                      ros::Time(0), stransform0);
+            listener1.lookupTransform(frame3,frame5,
+                                      ros::Time(0), stransform1);
+            flag=1;
+        }
+        catch (tf::TransformException ex){
+            // cerr<<ex.what()<<endl;
+        }
+    }
+
+    position_base.setX(stransform0.getOrigin().x());
+    position_base.setX(stransform0.getOrigin().y());
+    position_base.setZ(stransform0.getOrigin().z());
+
+    dir_base.setX(stransform1.getOrigin().x());
+    dir_base.setX(stransform1.getOrigin().y());
+    dir_base.setZ(0);
+}
