@@ -171,29 +171,21 @@ void l_push_object(simple_robot_control::Arm& arm_l, tf::Vector3& position, tf::
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    position.setZ(position.z()-0.15);
-    //position.setY(position.y()-0.01);
+    std::cout<<  "position.x():" << position.x() <<std::endl;
+    std::cout<<  "position.y():" << position.y() <<std::endl;
+    std::cout<<  "position.z():" << position.z() <<std::endl;
 
-    tf::Vector3 start_position = position - 0.35*push_direction;
-    tf::Vector3 target_position = position - 0.25*push_direction;
-
-    std::cout<<  "start_position.x():" << start_position.x() <<std::endl;
-    std::cout<<  "start_position.y():" << start_position.y() <<std::endl;
-    std::cout<<  "start_position.z():" << start_position.z() <<std::endl;
-    std::cout<<  "target_position.x():" << target_position.x() <<std::endl;
-    std::cout<<  "target_position.y():" << target_position.y() <<std::endl;
-    std::cout<<  "target_position.z():" << target_position.z() <<std::endl;
-
-
+    const double dis = 0.15;
+    const int segment = 5;
+    double lengthForEachSeg = dis / segment;
 
     //use left arm
-    tf::StampedTransform tf_l1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_l1");
-    arm_l.moveGrippertoPose(tf_l1);
+    for(int i=0; i<segment; i++){
+        tf::Vector3 new_position = position - 0.18 * push_direction + lengthForEachSeg * i * push_direction;
 
-    //arm_l.moveGripperToPosition(tf::Vector3(0.741,-0.413, 0.809), "base_link", simple_robot_control::Arm::FRONTAL);
-
-    tf::StampedTransform tf_l2 (tf::Transform(quaternion, target_position), ros::Time::now(), "base_link","tf_l2");
-    arm_l.moveGrippertoPose(tf_l2);
+        tf::StampedTransform tf (tf::Transform(quaternion, new_position), ros::Time::now(), "base_link","tf");
+        arm_l.moveGrippertoPose(tf);
+    }
 
     ros::Duration(1.0).sleep();
 }
@@ -214,16 +206,22 @@ void r_push_object(simple_robot_control::Arm& arm_r, tf::Vector3& position, tf::
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    //tf::Vector3 start_position = position - 0.03*push_direction;
-    tf::Vector3 start_position = position - 0.2*push_direction;
-    tf::Vector3 target_position = position + 0.1*push_direction;
+    std::cout<<  "position.x():" << position.x() <<std::endl;
+    std::cout<<  "position.y():" << position.y() <<std::endl;
+    std::cout<<  "position.z():" << position.z() <<std::endl;
 
-    //use right arm
-    tf::StampedTransform tf_r1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_r1");
-    arm_r.moveGrippertoPose(tf_r1);
+    const double dis = 0.15;
+    const int segment = 5;
+    double lengthForEachSeg = dis / segment;
 
-    tf::StampedTransform tf_r2 (tf::Transform(quaternion, target_position), ros::Time::now(), "base_link","tf_r2");
-    arm_r.moveGrippertoPose(tf_r2);
+    //use left arm
+    for(int i=0; i<segment; i++){
+        tf::Vector3 new_position = position - 0.25 * push_direction + lengthForEachSeg * i * push_direction;
+
+        tf::StampedTransform tf (tf::Transform(quaternion, new_position), ros::Time::now(), "base_link","tf");
+        arm_r.moveGrippertoPose(tf);
+    }
+
     ros::Duration(1.0).sleep();
 }
 
@@ -243,12 +241,9 @@ void l_take_back(simple_robot_control::Arm& arm_l, tf::Vector3& position, tf::Ve
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    position.setZ(position.z()-0.15);
-    //position.setY(position.y()-0.01);
-
-    tf::Vector3 start_position = position - 0.25*push_direction;
+    tf::Vector3 start_position = position - 0.03*push_direction;
     //tf::Vector3 target_position = position - 0.03*push_direction;
-    tf::Vector3 target_position = position - 0.35*push_direction;
+    tf::Vector3 target_position = position - 0.18*push_direction;
 
     //use left arm
     tf::StampedTransform tf_l1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_l1");
@@ -278,9 +273,9 @@ void r_take_back(simple_robot_control::Arm& arm_r, tf::Vector3& position, tf::Ve
     std::cout<<  "quaternion.y():" << quaternion.y() <<std::endl;
     std::cout<<  "quaternion.z():" << quaternion.z() <<std::endl;
 
-    tf::Vector3 start_position = position + 0.1*push_direction;
+    tf::Vector3 start_position = position - 0.1*push_direction;
     //tf::Vector3 target_position = position - 0.03*push_direction;
-    tf::Vector3 target_position = position - 0.20*push_direction;
+    tf::Vector3 target_position = position - 0.25*push_direction;
 
     //use right arm
     tf::StampedTransform tf_r1 (tf::Transform(quaternion, start_position), ros::Time::now(), "base_link","tf_r1");
