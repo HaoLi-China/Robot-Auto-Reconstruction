@@ -80,7 +80,7 @@ pr2_controllers_msgs::JointTrajectoryGoal PR2MoveArmJoint::armScanTrajectory(int
         // goal.trajectory.points[ind].velocities[5] = 0.01;
         // goal.trajectory.points[ind].velocities[6] = 0.0;
         //goal.trajectory.points[ind].time_from_start = ros::Duration(8);   // 5 is great
-        goal.trajectory.points[ind].time_from_start = ros::Duration(5);   // 5 is great
+        goal.trajectory.points[ind].time_from_start = ros::Duration(3);   // 5 is great
 
 
         // Second traj point: down
@@ -105,7 +105,7 @@ pr2_controllers_msgs::JointTrajectoryGoal PR2MoveArmJoint::armScanTrajectory(int
         //goal.trajectory.points[ind].velocities[5] = 0.01;
         //goal.trajectory.points[ind].velocities[6] = 0.0;
         //goal.trajectory.points[ind].time_from_start = ros::Duration(16);  // 10 is great
-        goal.trajectory.points[ind].time_from_start = ros::Duration(10);  // 10 is great
+        goal.trajectory.points[ind].time_from_start = ros::Duration(6);  // 10 is great
     }
     else if(flag==1){
         goal.trajectory.joint_names.push_back("r_shoulder_pan_joint");
@@ -144,7 +144,7 @@ pr2_controllers_msgs::JointTrajectoryGoal PR2MoveArmJoint::armScanTrajectory(int
         // goal.trajectory.points[ind].velocities[5] = 0.01;
         // goal.trajectory.points[ind].velocities[6] = 0.0;
         //goal.trajectory.points[ind].time_from_start = ros::Duration(8);   // 5 is great
-        goal.trajectory.points[ind].time_from_start = ros::Duration(5);   // 5 is great
+        goal.trajectory.points[ind].time_from_start = ros::Duration(4);   // 5 is great
 
 
         // Second traj point: down
@@ -169,7 +169,7 @@ pr2_controllers_msgs::JointTrajectoryGoal PR2MoveArmJoint::armScanTrajectory(int
         //goal.trajectory.points[ind].velocities[5] = 0.01;
         //goal.trajectory.points[ind].velocities[6] = 0.0;
         //goal.trajectory.points[ind].time_from_start = ros::Duration(16);  // 10 is great
-        goal.trajectory.points[ind].time_from_start = ros::Duration(10);  // 10 is great
+        goal.trajectory.points[ind].time_from_start = ros::Duration(6);  // 10 is great
     }
 
     return goal;

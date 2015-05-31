@@ -65,6 +65,25 @@ void get_l_touch_point_and_dir(ros::NodeHandle &n, const tf::Vector3 &position_k
 //get right gripper touch point and direction
 void get_r_touch_point_and_dir(ros::NodeHandle &n, const tf::Vector3 &position_kinect, const tf::Vector3 &dir_kinect, tf::Vector3 &position_base, tf::Vector3 &dir_base);
 
+//base drive forward
+void base_drive_forward(simple_robot_control::Robot &robot, double distance);
+
+//base drive back
+void base_drive_back(simple_robot_control::Robot &robot, double distance);
+
+//base drive left
+void base_drive_left(simple_robot_control::Robot &robot, double distance);
+
+//base drive right
+void base_drive_right(simple_robot_control::Robot &robot, double distance);
+
+//base turn left
+void base_turn_left(simple_robot_control::Robot &robot, double radians);
+
+//base turn right
+void base_turn_right(simple_robot_control::Robot &robot, double radians);
+
 //just for test
 void test_calibration_result(ros::NodeHandle &n, const tf::Vector3 &position_kinect, const tf::Vector3 &dir_kinect);
+
 #endif

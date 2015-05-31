@@ -54,6 +54,35 @@ void init_right_arm_pose(simple_robot_control::Robot &robot, double pos_right_ar
     robot.right_arm.stretch(pos_right_arm);
 }
 
+//base drive forward
+void base_drive_forward(simple_robot_control::Robot &robot, double distance){
+    robot.base.driveForward(distance, 0.15);
+}
+
+//base drive back
+void base_drive_back(simple_robot_control::Robot &robot, double distance){
+    robot.base.driveBack(distance, 0.15);
+}
+
+//base drive left
+void base_drive_left(simple_robot_control::Robot &robot, double distance){
+    robot.base.driveLeft(distance, 0.15);
+}
+
+//base drive right
+void base_drive_right(simple_robot_control::Robot &robot, double distance){
+    robot.base.driveRight(distance, 0.15);
+}
+
+//base turn left
+void base_turn_left(simple_robot_control::Robot &robot, double radians){
+    robot.base.turn(0, radians, 0.2);
+}
+
+//base turn right
+void base_turn_right(simple_robot_control::Robot &robot, double radians){
+    robot.base.turn(1, radians, 0.2);
+}
 
 //r_arm pick up kinect
 void r_pick_up_kinect(simple_robot_control::Arm& arm_r, simple_robot_control::Gripper& gripper_r, simple_robot_control::Base& base){

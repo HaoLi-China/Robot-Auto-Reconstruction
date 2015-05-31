@@ -105,7 +105,7 @@ public:
 	  /**
 	   * moves arm to joint angle position. positions should contain a multiple of the 7 arm joint positions to create a trajectory
 	   */
-	  bool goToJointPos (const vector<double>& positions , double max_time = 3.0, bool wait = true );
+      bool goToJointPos (const vector<double>& positions , double max_time = 8.0, bool wait = true );
 
 
 	  /**
@@ -208,7 +208,7 @@ public:
 	  /**
 	   * moves arm to joint position. positions should contain a multiple of the 7 arm joint positions to create a trajectory
 	   */
-	  bool goToJointPos (const double* positions , int num_positions, double max_time = 3.0, bool wait = true );
+      bool goToJointPos (const double* positions , int num_positions, double max_time = 8.0, bool wait = true );
 
 	  /**
 	   * sets current_joint_pos_ to current positions of the robot arm

@@ -39,62 +39,8 @@ target_link_libraries(workBeforeCalibration ${PROJECT_NAME})
 rosbuild_add_executable(calibration src/calibration.cpp)
 target_link_libraries(calibration ${PROJECT_NAME})
 
-rosbuild_add_executable(test src/test.cpp)
-target_link_libraries(test ${PROJECT_NAME})
-
-#rosbuild_add_executable(init_arm_pose test/init_arm_pose.cpp)
-#target_link_libraries(init_arm_pose ${PROJECT_NAME})
-
-#rosbuild_add_executable(test0 test/test0.cpp)
-#target_link_libraries(test0 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test1 test/test1.cpp)
-#target_link_libraries(test1 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test2 test/test2.cpp)
-#target_link_libraries(test2 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test3 test/test3.cpp)
-#target_link_libraries(test3 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test4 test/test4.cpp)
-#target_link_libraries(test4 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test5 test/test5.cpp)
-#target_link_libraries(test5 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test6 test/test6.cpp)
-#target_link_libraries(test6 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test7 test/test7.cpp)
-#target_link_libraries(test7 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test8 test/test8.cpp)
-#target_link_libraries(test8 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test9 test/test9.cpp)
-#target_link_libraries(test9 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test10 test/test10.cpp)
-#target_link_libraries(test10 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test11 test/test11.cpp)
-#target_link_libraries(test11 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test12 test/test12.cpp)
-#target_link_libraries(test12 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test13 test/test13.cpp)
-#target_link_libraries(test13 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test14 test/test14.cpp)
-#target_link_libraries(test14 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test15 test/test15.cpp)
-#target_link_libraries(test15 ${PROJECT_NAME})
-
-#rosbuild_add_executable(test16 test/test16.cpp)
-#target_link_libraries(test16 ${PROJECT_NAME})
+rosbuild_add_executable(testt src/test.cpp)
+target_link_libraries(testt ${PROJECT_NAME})
 
 #common commands for building c++ executables and libraries
 #rosbuild_add_library(${PROJECT_NAME} src/example.cpp)

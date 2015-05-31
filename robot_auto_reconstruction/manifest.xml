@@ -1,10 +1,10 @@
 <package>
   <description brief="interface to PR2 controllers">
 
-     Simple C++ and python interface to move the arms, head, base, torso and grippers of a PR2 robot.
+     Simple C++ and python interface to move the arms, head, base, torso and grippers of a PR2 robot. And added interface to remote control PR2 robot.
 
   </description>
-  <author>Christian Bersch, Sebastian Haug (Maintained by Benjamin Pitzer)</author>
+  <author>Christian Bersch, Sebastian Haug (Maintained by Benjamin Pitzer), Hao Li modified it.</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/simple_robot_control</url>

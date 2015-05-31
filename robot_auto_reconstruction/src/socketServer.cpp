@@ -67,72 +67,85 @@ void play_sound_tip(char ch){
 
     switch(ch){
     case 'a':
-        system("rosrun sound_play say.py \"I will change my pose.\"");
+        //system("rosrun sound_play say.py \"I will change my pose.\"");
         printf("I will change my pose.\n");
         break;
     case 'b':
-        system("rosrun sound_play say.py \"I will change my left arm pose.\"");
+        //system("rosrun sound_play say.py \"I will change my left arm pose.\"");
         printf("I will change my left arm pose.\n");
         break;
     case 'c':
-        system("rosrun sound_play say.py \"I will change my right arm pose.\"");
+        //system("rosrun sound_play say.py \"I will change my right arm pose.\"");
         printf("I will change my right arm pose.\n");
         break;
     case 'd':
-        system("rosrun sound_play say.py \"I will make scanner up and down.\"");
+        //system("rosrun sound_play say.py \"I will make scanner up and down.\"");
         printf("I will make scanner up and down.\n");
         break;
     case 'e':
-        system("rosrun sound_play say.py \"I will make scanner up and down.\"");
+        //system("rosrun sound_play say.py \"I will make scanner up and down.\"");
         printf("I will make scanner up and down.\n");
         break;
     case 'f':
-        system("rosrun sound_play say.py \"I will pick up kinect.\"");
+        //system("rosrun sound_play say.py \"I will pick up kinect.\"");
         printf("I will pick up kinect.\n");
         break;
     case 'g':
-        system("rosrun sound_play say.py \"I will put down kinect.\"");
+        //system("rosrun sound_play say.py \"I will put down kinect.\"");
         printf("I will put down kinect.\n");
         break;
     case 'h':
-        system("rosrun sound_play say.py \"I will pick up kinect.\"");
+        //system("rosrun sound_play say.py \"I will pick up kinect.\"");
         printf("I will pick up kinect.\n");
         break;
     case 'i':
-        system("rosrun sound_play say.py \"I will put down kinect.\"");
+        //system("rosrun sound_play say.py \"I will put down kinect.\"");
         printf("I will put down kinect.\n");
         break;
     case 'j':
-        system("rosrun sound_play say.py \"I will push the object.\"");
+        //system("rosrun sound_play say.py \"I will push the object.\"");
         printf("I will push the object.\n");
         break;
     case 'k':
-        system("rosrun sound_play say.py \"I will push the object.\"");
+        //system("rosrun sound_play say.py \"I will push the object.\"");
         printf("I will push the object.\n");
         break;
     case 'l':
-        system("rosrun sound_play say.py \"I will set head pose.\"");
+        //system("rosrun sound_play say.py \"I will set head pose.\"");
         printf("I will set head pose.\n");
         break;
     case 'm':
-        system("rosrun sound_play say.py \"I will take back the arm.\"");
+        //system("rosrun sound_play say.py \"I will take back the arm.\"");
         printf("I will take back the arm.\n");
         break;
     case 'n':
-        system("rosrun sound_play say.py \"I will take back the arm.\"");
+        //system("rosrun sound_play say.py \"I will take back the arm.\"");
         printf("I will take back the arm.\n");
         break;
     case 'o':
-        system("rosrun sound_play say.py \"I will find gripper touch point.\"");
+        //system("rosrun sound_play say.py \"I will find gripper touch point.\"");
         printf("I will find gripper touch point.\n");
         break;
     case 'p':
-        system("rosrun sound_play say.py \"I will find gripper touch point.\"");
+        //system("rosrun sound_play say.py \"I will find gripper touch point.\"");
         printf("I will find gripper touch point.\n");
         break;
     case 'q':
-        system("rosrun sound_play say.py \"I will test the calibration result.\"");
+        //system("rosrun sound_play say.py \"I will test the calibration result.\"");
         printf("I will test the calibration result.\n");
+        break;
+    case 'r':
+        break;
+    case 's':
+        break;
+    case 't':
+       break;
+    case 'u':
+        break;
+    case 'v':
+        break;
+    case 'w':
+       break;
     case 'z':
         system("rosrun sound_play say.py \"The connection will be closed.\"");
         printf("The connection will be closed.\n");
@@ -345,6 +358,27 @@ void data_parse_op(char* ch, tf::Vector3& position, tf::Vector3& direction){
     }
 }
 
+void data_parse_rstuvw(char* ch, double &value){
+    int index=0;
+    int count=0;
+    char tem[20];
+
+    while(*ch!='\0'){
+        if(*ch==',' || *ch==';'){
+            strncpy(tem,ch-index,index);
+            tem[index]='\0';
+            value=str2float(tem);
+            index=0;
+            count++;
+            ch++;
+            cout<<tem<<endl;
+            continue;
+        }
+        index++;
+        ch++;
+    }
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "socketServer");
@@ -427,6 +461,12 @@ int main(int argc, char **argv)
                     //o:get left gripper touch point
                     //p:get right gripper touch point
                     //q:test calibration result
+                    //r:base drive forward
+                    //s:base drive back
+                    //t:base drive left
+                    //u:base drive right
+                    //v:base turn left
+                    //w:base turn right
                     //z:close
 
                     play_sound_tip(message[0]);
@@ -583,13 +623,68 @@ int main(int argc, char **argv)
                         sendData(ch_pos,strlen(ch_pos)+1);
                         break;
                     }
-                    case 'q'://just for test
+                    case 'q':
                     {
                         tf::Vector3 position_kinect;
                         tf::Vector3 dir_kinect;
 
                         data_parse_op(message+2, position_kinect, dir_kinect);
                         test_calibration_result(n, position_kinect, dir_kinect);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 'r':
+                    {
+                        double distance;
+                        data_parse_rstuvw(message+2, distance);
+                        //up_down_right_scanner(move_arm_joint, -1.6, -1.75);
+                        base_drive_forward(robot, distance);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 's':
+                    {
+                        double distance;
+                        data_parse_rstuvw(message+2, distance);
+                        base_drive_back(robot, distance);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 't':
+                    {
+                        double distance;
+                        data_parse_rstuvw(message+2, distance);
+                        base_drive_left(robot, distance);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 'u':
+                    {
+                        double distance;
+                        data_parse_rstuvw(message+2, distance);
+                        base_drive_right(robot, distance);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 'v':
+                    {
+                        double radians;
+                        data_parse_rstuvw(message+2, radians);
+                        base_turn_left(robot, radians);
+
+                        sendData("finished",9);
+                        break;
+                    }
+                    case 'w':
+                    {
+                        double radians;
+                        data_parse_rstuvw(message+2, radians);
+                        base_turn_right(robot, radians);
 
                         sendData("finished",9);
                         break;

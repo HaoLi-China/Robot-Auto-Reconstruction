@@ -44,17 +44,19 @@ int main(int argc, char** argv){
 
     simple_robot_control::Robot robot;
 
-    double pos_left_arm[] = {1.613, 0.063, 1.532, -1.536, -0.141, -0.094, -7.788};
-    double pos_right_arm[] = {0.510, 0.625, 0.100, -2.117, 3.207, -1.854, -3.276};
-    tf::Vector3 head_focus(1.5, 0.5, 0.6);
-    double torso_up = 0.20;
+//    double pos_left_arm[] = {1.613, 0.063, 1.532, -1.536, -0.141, -0.094, -7.788};
+//    double pos_right_arm[] = {0.510, 0.625, 0.100, -2.117, 3.207, -1.854, -3.276};
+//    tf::Vector3 head_focus(1.5, 0.5, 0.6);
+//    double torso_up = 0.20;
 
-    //init_robot_pose(robot, pos_left_arm, pos_right_arm, head_focus, torso_up);
+//    //init_robot_pose(robot, pos_left_arm, pos_right_arm, head_focus, torso_up);
 
-    tf::Vector3 position_kinect(-0.048688, -0.021600, 0.697898);
-    tf::Vector3 dir_kinect(0.530493, -0.394864, 0.750106);
+//    tf::Vector3 position_kinect(-0.048688, -0.021600, 0.697898);
+//    tf::Vector3 dir_kinect(0.530493, -0.394864, 0.750106);
 
-    test_calibration_result(nh, position_kinect, dir_kinect);
+//    test_calibration_result(nh, position_kinect, dir_kinect);
+
+    base_drive_forward(robot, 0.31);
 
     return 0;
 }
